@@ -92,7 +92,7 @@ Distributed under the **GPLv2.0 License**. See [LICENSE](https://github.com/Nikh
 
 ## 🙏 Acknowledgements
 
-*   **NikhilMunda**: Original creator and maintainer of the OverQuack project.
+*   **NikhilMunda**: Original creator and maintainer of the OverQuack Compiler project.
 *   **Monaco Editor**: The powerhouse code editor that makes this project possible.
 *   The open-source community for continuous inspiration.
 
