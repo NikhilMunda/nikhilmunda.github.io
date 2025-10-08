@@ -1,129 +1,94 @@
-# Ducky Script Compiler & Payload Generator
+# 🦆 WiFi Ducky Script Compiler - OverQuack Enhanced
+
+## Overview
+An advanced, browser-based Ducky Script editor and compiler designed for the **OverQuack WiFi Rubber Ducky** project. This tool provides a professional IDE-like experience for creating, validating, and compiling `.oqs` payloads directly in your browser.
 
 <img width="1872" height="920" alt="Screenshot 2025-10-08 224744" src="https://github.com/user-attachments/assets/50ba94c1-e069-4193-b171-9635997de20a" />
-" />
 
 ## 🫡 Acknowledgments
 
 This Compiler supports Normal pico ducky as well as have support for [VexilonHacker](https://github.com/VexilonHacker/OverQuack) and my [OverQuack-Remastered](https://github.com/NikhilMunda/OverQuack-Remastered) DuckyScripts.
 
-## Overview
+## ✨ Key Features
 
-This project is a powerful web-based Ducky Script compiler and payload generator designed to help penetration testers, hardware hackers, and enthusiasts create, validate, and generate payload files (`payload.oqs`) for Rubber Ducky-like devices.
+This enhanced compiler is built to be powerful, intuitive, and bug-free, offering a complete solution for Ducky Script development.
 
-It provides a professional IDE experience with a rich code editor, real-time syntax checking, advanced validation for Ducky scripting language, and downloadable compiled payload generation — all in a browser.
-
-## Features
-
-- **Monaco-based editor** with syntax highlighting, autocomplete, and error highlighting
-- Supports both comment style orignal 'REM', 'REM_BLOCK', 'END_REM', Traditional Ducky comment and '//', '/*', '*/', C-style comment respectively. Example can be found at the live compiler. If your Ducky doesn't support C-style then my suggestion is please donot use C-style comment with your code.
-- Full **syntax and semantic validation** of Ducky scripting commands and blocks
-- Validation of **variables, functions, defines, and block structures**
-- Color-coded, user-friendly **console** showing detailed compilation errors and warnings with line numbers
-- Real-time **compilation status** and progress indication
-- Support for most common Ducky script commands including mouse, keyboard, and control sequences
-- Downloadable `.oqs` payload file generation after successful compilation
-- Default example script to get started quickly
-
-## Getting Started
-
-### Prerequisites
-
-- Modern web browser (Chrome, Firefox, Edge, Safari)
-- No installation or server backend required — fully client-side!
-
-### Usage
-
-1. Open the web application.
-2. Write or paste your Ducky Script code into the editor.
-3. Click **Compile & Validate** to check your code.
-4. View the console output for errors or success messages.
-5. If no errors, click **Generate payload.oqs** to download your compiled payload file.
-6. Load this payload onto your target device for execution.
-
-### Keyboard Shortcuts
-
-- `Ctrl + Enter`: Compile the script
-- Standard editor shortcuts supported by Monaco
-
-## Example Script
-
-The editor loads a comprehensive sample demonstrating variables, functions, loops, conditionals, mouse & keyboard commands, and comments.
-```
-// Advanced Ducky Script Example - C-style comments
-/* 
-This demonstrates both comment styles
-Multi-line C-style comment block 
-*/
-
-REM Traditional Ducky comment
-VAR $username = "admin"
-VAR $delay_time = 500
-
-DEFINE $FAST_TYPE 50
-
-FUNCTION open_notepad
-  GUI r
-  DELAY $delay_time
-  STRING notepad    // Open notepad
-  ENTER
-  DELAY 1000
-END_FUNCTION
-
-IF $_CAPSLOCK_ON == 1
-  CAPSLOCK
-END_IF
-
-open_notepad
-
-STRING_BLOCK
-Hello, this is a test
-Written by: $username
-Current delay: $delay_time ms
-END_STRING
-
-STRINGLN
-DELAY $FAST_TYPE
-STRING This line has a fast delay
-
-MOUSE_MOVE 100 100
-MOUSE_CLICK LEFT    // Click at position
-DELAY 500
-
-WHILE $delay_time > 100
-  DELAY $delay_time
-  $delay_time = $delay_time - 100
-END_WHILE
-
-/*
-This is a C-style block comment
-Multiple lines can go here
-*/
-
-REM_BLOCK
-This is a traditional Ducky block comment
-Both styles are supported
-END_REM
-```
-## Contributing
-
-Contributions are welcome! Please:
-
-- Fork the repository
-- Create descriptive pull requests
-- Adhere to the code style and include comments
-- Report issues or feature requests via GitHub Issues
-
-## License
-
-This project is licensed under the **MIT License**
-
-## Contact
-
-Created and maintained by Nikhil Munda.
-
-For questions, contact: nikhilmunda@gmail.com
+*   **💻 Advanced Code Editor**: Powered by **Monaco Editor** (the same editor used in VS Code) for a rich, responsive, and familiar coding experience.
+*   **🤖 Real-time Syntax Highlighting**: Custom Ducky Script language support with intelligent highlighting for commands, variables, strings, and comments.
+*   **⚡ Smart Auto-Completion**: Context-aware suggestions for all Ducky Script commands, variables (including internal `$_` variables), and constants.
+*   **✅ Live Syntax Validation**: Instantly detects and flags errors in your script with clear, underlined markers and detailed error messages in the console.
+*   **⚙️ One-Click `.oqs` Compilation**: Generates a perfectly formatted `.oqs` JSON payload, ready to be used with the `customise_fixed_complete.py` script and your OverQuack device.
+*   **🌓 Dark Theme by Default**: A sleek, professional dark theme that's easy on the eyes for long coding sessions.
+*   **📚 Template Library**: Includes a collection of ready-to-use Ducky Script payloads, from basic "Hello World" tests to advanced info-gathering scripts.
+*   **⌨️ Keyboard Shortcuts**: Power-user shortcuts for common actions like compiling (`Ctrl+Enter`), validating (`F5`), saving (`Ctrl+S`), and more.
+*   **📂 Drag & Drop Support**: Easily load your existing `.txt` or `.ds` script files by dragging and dropping them into the editor.
+*   **📱 Fully Responsive Layout**: A perfect vertical layout that works seamlessly on desktop, tablet, and mobile devices without any overflow.
 
 ---
+
+## 🚀 Getting Started
+
+Getting the compiler up and running is incredibly simple.
+
+1.  **Clone or Download the Repository:**
+    ```
+    git clone https://github.com/your-username/your-repo-name.git
+    ```
+2.  **Navigate to the Directory:**
+    ```
+    cd your-repo-name
+    ```
+3.  **Open the HTML File:**
+    *   Simply open the `index.html` file in any modern web browser (like Chrome, Firefox, or Edge).
+
+That's it! The compiler is a completely self-contained, client-side application. No web server or additional dependencies are required.
+
+---
+
+## 🛠️ How to Use
+
+*   **Writing Code**: Start typing in the editor. You'll get instant feedback with syntax highlighting and validation.
+*   **Using Templates**: Click the **Templates button (📚)** to browse and load pre-built scripts.
+*   **Validating**: Press `F5` or click the **Validate button (✅)** to check your script for errors.
+*   **Compiling**: Press `Ctrl+Enter` or click the **Compile button (⚙️)** to generate the `.oqs` payload. The output will appear in the console.
+*   **Downloading**: After a successful compilation, click the **Download button (⬇️)** to save the `.oqs` file to your computer.
+
+---
+
+## 📁 File Structure
+
+*   **`index.html`**: The main HTML file that structures the application.
+*   **`style.css`**: The stylesheet that defines the layout, themes, and all visual elements.
+*   **`app.js`**: The core JavaScript file containing all the application logic, including the compiler, editor integration, and event handling.
+*   **: The Python backend script that processes the `.oqs` payloads generated by this compiler for the OverQuack device.
+
+---
+
+## 🤝 Contributing
+
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
+
+---
+
+## 📜 License
+
+Distributed under the **GPLv2.0 License**. See `LICENSE` for more information.
+
+---
+
+## 🙏 Acknowledgements
+
+*   **NikhilMunda**: Original creator and maintainer of the OverQuack project.
+*   **Monaco Editor**: The powerhouse code editor that makes this project possible.
+*   The open-source community for continuous inspiration.
+
 
 Made with ❤️ for penetration testers and hardware hackers looking for a powerful, browser-based Ducky script development environment.
