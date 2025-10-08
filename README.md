@@ -1,10 +1,11 @@
 # Ducky Script Compiler & Payload Generator
 
-<img width="1872" height="920" alt="image" src="https://github.com/user-attachments/assets/57028f24-0eda-4bb7-bacf-2be18eed2b6a" />
+<img width="1872" height="920" alt="Screenshot 2025-10-08 224744" src="https://github.com/user-attachments/assets/50ba94c1-e069-4193-b171-9635997de20a" />
+" />
 
 ## 🫡 Acknowledgments
 
-This Compiler supports Normal pico ducky as well as have support for [VexilonHacker](https://github.com/VexilonHacker/OverQuack) DuckyScripts.
+This Compiler supports Normal pico ducky as well as have support for [VexilonHacker](https://github.com/VexilonHacker/OverQuack) and my [OverQuack-Remastered](https://github.com/NikhilMunda/OverQuack-Remastered) DuckyScripts.
 
 ## Overview
 
