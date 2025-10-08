@@ -32,11 +32,11 @@ Getting the compiler up and running is incredibly simple.
 
 1.  **Clone or Download the Repository:**
     ```
-    git clone https://github.com/your-username/your-repo-name.git
+    git clone https://github.com/NikhilMunda/nikhilmunda.github.io.git
     ```
 2.  **Navigate to the Directory:**
     ```
-    cd your-repo-name
+    cd nikhilmunda.github.io
     ```
 3.  **Open the HTML File:**
     *   Simply open the `index.html` file in any modern web browser (like Chrome, Firefox, or Edge).
