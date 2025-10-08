@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi Ducky Script Compiler - OverQuack Enhanced</title>
+    <meta name="description" content="Advanced WiFi Ducky Script Compiler supporting full .oqs payload generation">
+    <meta name="author" content="NikhilMunda - Enhanced Version">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦆</text></svg>">
+
+    <!-- Monaco Editor -->
+    <script src="https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js"></script>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://unpkg.com/monaco-editor@0.45.0/min/vs/editor/editor.main.js" as="script">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" aria-hidden="true">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>WiFi Ducky Compiler</h2>
+            <p>Loading Monaco Editor...</p>
+            <div class="loading-progress">
+                <div class="loading-bar" id="loading-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Container -->
+    <div id="app" class="app-container" role="main">
+        <!-- Header -->
+        <header class="app-header" role="banner">
+            <div class="header-left">
+                <h1 class="app-title">
+                    <span class="app-icon" aria-hidden="true">🦆</span>
+                    WiFi Ducky Compiler
+                    <span class="version-badge">Enhanced</span>
+                </h1>
+                <p class="app-subtitle">OverQuack Script Editor - Complete .oqs Support</p>
+            </div>
+
+            <div class="header-center">
+                <div class="status-indicators" role="status" aria-label="Script Statistics">
+                    <div class="status-item">
+                        <span class="status-icon">📄</span>
+                        <span class="status-label">Lines:</span>
+                        <span id="line-count" class="status-value">0</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon">🔢</span>
+                        <span class="status-label">Variables:</span>
+                        <span id="var-count" class="status-value">0</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon">⚡</span>
+                        <span class="status-label">Functions:</span>
+                        <span id="func-count" class="status-value">0</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon">💾</span>
+                        <span class="status-label">Memory:</span>
+                        <span id="memory-usage" class="status-value">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="header-actions">
+                    <button id="help-btn" class="btn btn--icon" title="Help & Shortcuts (F1)" aria-label="Show help and shortcuts">
+                        <span aria-hidden="true">❓</span>
+                    </button>
+                    <button id="templates-btn" class="btn btn--icon" title="Load Templates" aria-label="Open template library">
+                        <span aria-hidden="true">📚</span>
+                    </button>
+                    <button id="theme-toggle" class="btn btn--icon" title="Toggle Theme" aria-label="Switch between light and dark theme">
+                        <span class="theme-icon" aria-hidden="true">🌙</span>
+                    </button>
+                    <button id="fullscreen-btn" class="btn btn--icon" title="Toggle Fullscreen (F11)" aria-label="Toggle fullscreen mode">
+                        <span aria-hidden="true">⛶</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Toolbar -->
+            <nav class="toolbar" role="toolbar" aria-label="Editor actions">
+                <div class="toolbar-group">
+                    <button id="new-btn" class="btn btn--primary" title="New Script (Ctrl+N)" aria-label="Create new script">
+                        <span aria-hidden="true">📄</span>
+                        New
+                    </button>
+                    <button id="open-btn" class="btn btn--secondary" title="Open File (Ctrl+O)" aria-label="Open existing script">
+                        <span aria-hidden="true">📁</span>
+                        Open
+                    </button>
+                    <button id="save-btn" class="btn btn--secondary" title="Save Script (Ctrl+S)" aria-label="Save current script">
+                        <span aria-hidden="true">💾</span>
+                        Save
+                    </button>
+                </div>
+
+                <div class="toolbar-group">
+                    <button id="compile-btn" class="btn btn--success" title="Compile Script (Ctrl+Enter)" aria-label="Compile Ducky script">
+                        <span aria-hidden="true">⚙️</span>
+                        Compile
+                    </button>
+                    <button id="validate-btn" class="btn btn--info" title="Validate Syntax (F5)" aria-label="Validate script syntax">
+                        <span aria-hidden="true">✅</span>
+                        Validate
+                    </button>
+                    <button id="download-btn" class="btn btn--warning" title="Download .oqs File" aria-label="Download compiled payload" disabled>
+                        <span aria-hidden="true">⬇️</span>
+                        Download
+                    </button>
+                </div>
+
+                <div class="toolbar-group">
+                    <button id="clear-console-btn" class="btn btn--outline" title="Clear Console (Ctrl+K)" aria-label="Clear console output">
+                        <span aria-hidden="true">🧹</span>
+                        Clear
+                    </button>
+                    <button id="settings-btn" class="btn btn--outline" title="Settings" aria-label="Open settings">
+                        <span aria-hidden="true">⚙️</span>
+                        Settings
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Editor and Console Layout -->
+            <div class="editor-layout">
+                <!-- Left Panel - Code Editor -->
+                <div class="editor-panel">
+                    <div class="editor-header">
+                        <h2 class="panel-title">
+                            <span aria-hidden="true">📝</span>
+                            Ducky Script Editor
+                        </h2>
+                        <div class="editor-controls">
+                            <select id="layout-select" class="select-control" title="Keyboard Layout" aria-label="Select keyboard layout">
+                                <option value="US">US</option>
+                                <option value="US_DVO">US Dvorak</option>
+                                <option value="WIN_FR">Windows French</option>
+                                <option value="WIN_DE">Windows German</option>
+                                <option value="WIN_ES">Windows Spanish</option>
+                                <option value="WIN_IT">Windows Italian</option>
+                                <option value="WIN_BR">Windows Brazilian</option>
+                                <option value="WIN_CZ">Windows Czech</option>
+                                <option value="WIN_DA">Windows Danish</option>
+                                <option value="WIN_HU">Windows Hungarian</option>
+                                <option value="WIN_PO">Windows Polish</option>
+                                <option value="WIN_SW">Windows Swedish</option>
+                                <option value="WIN_TR">Windows Turkish</option>
+                                <option value="WIN_UK">Windows UK</option>
+                                <option value="MAC_FR">Mac French</option>
+                            </select>
+                            <button id="find-btn" class="btn btn--sm" title="Find & Replace (Ctrl+F)" aria-label="Find and replace text">
+                                <span aria-hidden="true">🔍</span>
+                            </button>
+                            <button id="format-btn" class="btn btn--sm" title="Format Code" aria-label="Format script code">
+                                <span aria-hidden="true">🎨</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Monaco Editor Container -->
+                    <div id="monaco-editor" class="monaco-container" role="textbox" aria-label="Ducky script code editor" aria-multiline="true"></div>
+
+                    <!-- Editor Footer -->
+                    <div class="editor-footer">
+                        <div class="editor-info">
+                            <span id="cursor-position">Line 1, Column 1</span>
+                            <span class="separator">|</span>
+                            <span id="selection-info">No selection</span>
+                            <span class="separator">|</span>
+                            <span id="encoding-info">UTF-8</span>
+                        </div>
+                        <div class="editor-actions">
+                            <button id="word-wrap-btn" class="btn btn--xs" title="Toggle Word Wrap" aria-label="Toggle word wrap">
+                                <span aria-hidden="true">↩️</span>
+                            </button>
+                            <button id="minimap-btn" class="btn btn--xs" title="Toggle Minimap" aria-label="Toggle code minimap">
+                                <span aria-hidden="true">🗺️</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resize Handle -->
+                <div class="resize-handle" role="separator" aria-orientation="vertical" aria-label="Resize panels"></div>
+
+                <!-- Right Panel - Console and Tools -->
+                <div class="console-panel">
+                    <div class="panel-tabs" role="tablist">
+                        <button class="tab-btn active" data-tab="console" role="tab" aria-selected="true" aria-controls="console-tab">
+                            <span aria-hidden="true">🖥️</span>
+                            Console
+                        </button>
+                        <button class="tab-btn" data-tab="variables" role="tab" aria-selected="false" aria-controls="variables-tab">
+                            <span aria-hidden="true">🔢</span>
+                            Variables
+                        </button>
+                        <button class="tab-btn" data-tab="functions" role="tab" aria-selected="false" aria-controls="functions-tab">
+                            <span aria-hidden="true">⚡</span>
+                            Functions
+                        </button>
+                        <button class="tab-btn" data-tab="docs" role="tab" aria-selected="false" aria-controls="docs-tab">
+                            <span aria-hidden="true">📖</span>
+                            Docs
+                        </button>
+                    </div>
+
+                    <!-- Console Tab -->
+                    <div id="console-tab" class="tab-content active" role="tabpanel" aria-labelledby="console-tab">
+                        <div class="console-header">
+                            <h3 class="console-title">Compilation Output</h3>
+                            <div class="console-controls">
+                                <button id="auto-scroll-btn" class="btn btn--xs active" title="Auto-scroll console" aria-label="Toggle auto-scroll">
+                                    <span aria-hidden="true">📜</span>
+                                </button>
+                                <button id="word-wrap-console-btn" class="btn btn--xs" title="Wrap long lines" aria-label="Toggle word wrap in console">
+                                    <span aria-hidden="true">↩️</span>
+                                </button>
+                                <button id="export-log-btn" class="btn btn--xs" title="Export log" aria-label="Export console log">
+                                    <span aria-hidden="true">📤</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="console-output" class="console-output" role="log" aria-live="polite" aria-label="Compilation messages"></div>
+                    </div>
+
+                    <!-- Variables Tab -->
+                    <div id="variables-tab" class="tab-content" role="tabpanel" aria-labelledby="variables-tab">
+                        <div class="variables-header">
+                            <h3 class="variables-title">Script Variables</h3>
+                            <button id="refresh-vars-btn" class="btn btn--xs" title="Refresh variables" aria-label="Refresh variable list">
+                                <span aria-hidden="true">🔄</span>
+                            </button>
+                        </div>
+                        <div id="variables-list" class="variables-list" aria-label="List of script variables"></div>
+                    </div>
+
+                    <!-- Functions Tab -->
+                    <div id="functions-tab" class="tab-content" role="tabpanel" aria-labelledby="functions-tab">
+                        <div class="functions-header">
+                            <h3 class="functions-title">Script Functions</h3>
+                            <button id="refresh-funcs-btn" class="btn btn--xs" title="Refresh functions" aria-label="Refresh function list">
+                                <span aria-hidden="true">🔄</span>
+                            </button>
+                        </div>
+                        <div id="functions-list" class="functions-list" aria-label="List of script functions"></div>
+                    </div>
+
+                    <!-- Documentation Tab -->
+                    <div id="docs-tab" class="tab-content" role="tabpanel" aria-labelledby="docs-tab">
+                        <div class="docs-content">
+                            <h3>Ducky Script Commands</h3>
+                            <div class="docs-search">
+                                <input type="search" id="docs-search" placeholder="Search commands..." aria-label="Search documentation">
+                            </div>
+                            <div id="docs-list" class="docs-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer" role="contentinfo">
+            <div class="footer-left">
+                <span class="footer-info">WiFi Ducky Compiler v2.0 Enhanced</span>
+                <span class="separator">|</span>
+                <span class="footer-info">OverQuack Project by NikhilMunda</span>
+            </div>
+            <div class="footer-right">
+                <span id="compilation-status" class="status-message">Ready</span>
+                <div class="progress-container" id="progress-container" style="display: none;">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals and Overlays -->
+
+    <!-- Template Library Modal -->
+    <div id="templates-modal" class="modal" role="dialog" aria-labelledby="templates-modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="templates-modal-title">Script Templates</h2>
+                <button class="modal-close" aria-label="Close template library">
+                    <span aria-hidden="true">✕</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="template-search">
+                    <input type="search" id="template-search" placeholder="Search templates..." aria-label="Search templates">
+                </div>
+                <div id="template-list" class="template-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal" role="dialog" aria-labelledby="help-modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="help-modal-title">Help & Keyboard Shortcuts</h2>
+                <button class="modal-close" aria-label="Close help">
+                    <span aria-hidden="true">✕</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="help-content">
+                    <h3>Keyboard Shortcuts</h3>
+                    <div class="shortcuts-grid">
+                        <div class="shortcut-item">
+                            <kbd>Ctrl + N</kbd>
+                            <span>New Script</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl + O</kbd>
+                            <span>Open File</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl + S</kbd>
+                            <span>Save Script</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl + Enter</kbd>
+                            <span>Compile Script</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>F5</kbd>
+                            <span>Validate Syntax</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl + K</kbd>
+                            <span>Clear Console</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl + F</kbd>
+                            <span>Find & Replace</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>F1</kbd>
+                            <span>Show Help</span>
+                        </div>
+                    </div>
+
+                    <h3>Ducky Script Basics</h3>
+                    <div class="help-section">
+                        <p>Common commands:</p>
+                        <code>STRING Hello World<br>
+STRINGLN This adds a new line<br>
+DELAY 1000<br>
+GUI r<br>
+VAR $myvar = "test"</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal" role="dialog" aria-labelledby="settings-modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="settings-modal-title">Settings</h2>
+                <button class="modal-close" aria-label="Close settings">
+                    <span aria-hidden="true">✕</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-content">
+                    <div class="setting-group">
+                        <h3>Editor</h3>
+                        <label class="setting-item">
+                            <input type="checkbox" id="auto-save" checked>
+                            <span>Auto-save</span>
+                        </label>
+                        <label class="setting-item">
+                            <input type="checkbox" id="syntax-highlighting" checked>
+                            <span>Syntax highlighting</span>
+                        </label>
+                        <label class="setting-item">
+                            <input type="checkbox" id="line-numbers" checked>
+                            <span>Line numbers</span>
+                        </label>
+                        <label class="setting-item">
+                            <span>Font size:</span>
+                            <input type="range" id="font-size" min="10" max="24" value="14">
+                            <span id="font-size-value">14px</span>
+                        </label>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Compilation</h3>
+                        <label class="setting-item">
+                            <input type="checkbox" id="auto-compile" checked>
+                            <span>Auto-compile on change</span>
+                        </label>
+                        <label class="setting-item">
+                            <input type="checkbox" id="strict-validation" checked>
+                            <span>Strict validation</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Input (Hidden) -->
+    <input type="file" id="file-input" accept=".oqs,.txt,.ds" style="display: none;" aria-hidden="true">
+
+    <!-- Drag and Drop Overlay -->
+    <div id="drop-overlay" class="drop-overlay" aria-hidden="true">
+        <div class="drop-content">
+            <div class="drop-icon" aria-hidden="true">📁</div>
+            <h3>Drop your script file here</h3>
+            <p>Supported formats: .oqs, .txt, .ds</p>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
