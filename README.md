@@ -28,6 +28,12 @@ This enhanced compiler is built to be powerful, intuitive, and bug-free, offerin
 
 ## 🚀 Getting Started
 
+** Simply Open your browser and Enter the URL
+   ```
+   https://nikhilmunda.github.io/ 
+   ```
+OR
+
 Getting the compiler up and running is incredibly simple.
 
 1.  **Clone or Download the Repository:**
