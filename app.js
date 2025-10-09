@@ -857,6 +857,22 @@ PRINT WiFi Ducky demonstration completed successfully!`;
             this.updateLayoutSelection(e.target.value);
         });
 
+        // Template search functionality
+        const templateSearchInput = document.getElementById('template-search');
+        if (templateSearchInput) {
+            templateSearchInput.addEventListener('input', (e) => {
+                filterTemplates(e.target.value);
+            });
+        }
+
+        // Documentation search functionality  
+        const docsSearchInput = document.getElementById('docs-search');
+        if (docsSearchInput) {
+            docsSearchInput.addEventListener('input', (e) => {
+                filterDocumentation(e.target.value);
+            });
+        }
+
         // Tab switching
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -2004,3 +2020,51 @@ window.addEventListener('beforeunload', (e) => {
         window.wifiDuckyCompiler.saveToLocalStorage();
     }
 });
+
+/**
+ * Filter templates based on search query
+ */
+function filterTemplates(searchTerm) {
+    const templateItems = document.querySelectorAll('.template-item');
+    const searchLower = searchTerm.toLowerCase();
+    
+    templateItems.forEach(item => {
+        const templateName = item.querySelector('.template-name')?.textContent.toLowerCase() || '';
+        const templateDesc = item.querySelector('.template-description')?.textContent.toLowerCase() || '';
+        const templatePreview = item.querySelector('.template-preview')?.textContent.toLowerCase() || '';
+        
+        const matches = templateName.includes(searchLower) || 
+                       templateDesc.includes(searchLower) || 
+                       templatePreview.includes(searchLower);
+        
+        if (matches || searchTerm === '') {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+/**
+ * Filter documentation based on search query
+ */
+function filterDocumentation(searchTerm) {
+    const docItems = document.querySelectorAll('.docs-command');
+    const searchLower = searchTerm.toLowerCase();
+    
+    docItems.forEach(item => {
+        const commandName = item.querySelector('.docs-command-name')?.textContent.toLowerCase() || '';
+        const commandDesc = item.querySelector('.docs-command-description')?.textContent.toLowerCase() || '';
+        const commandExample = item.querySelector('.docs-command-example')?.textContent.toLowerCase() || '';
+        
+        const matches = commandName.includes(searchLower) || 
+                       commandDesc.includes(searchLower) || 
+                       commandExample.includes(searchLower);
+        
+        if (matches || searchTerm === '') {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
