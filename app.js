@@ -1466,94 +1466,71 @@ PRINT WiFi Ducky demonstration completed successfully!`;
     }
 
     /**
-     * Generate .oqs payload
-     */
+    * Generate .oqs payload
+    */
     async generatePayload(content) {
-        // Clean and process the content
-        const lines = content.split('\n').map(line => line.trim()).filter(line => line);
-
-        // Count various elements
+        // Clean and process the content - remove comments and empty lines
+        const lines = content.split('\n')
+            .map(line => line.trim())
+            .filter(line => line && !line.startsWith('REM') && !line.startsWith('//'));
+    
+        // Count various elements for stats
         let commands = 0;
         let variables = 0;
         let functions = 0;
-
-        const processedLines = [];
-
+    
         for (const line of lines) {
-            if (line.startsWith('REM') || line.startsWith('//')) continue;
-            if (line === '') continue;
-
-            processedLines.push(line);
             commands++;
-
             if (line.startsWith('VAR ')) variables++;
             if (line.startsWith('FUNCTION ')) functions++;
         }
-
-        // Create payload metadata
-        const metadata = {
-            version: "2.0",
-            generated: new Date().toISOString(),
-            compiler: "WiFi Ducky Enhanced Compiler",
-            author: "NikhilMunda",
-            project: "OverQuack",
-            stats: {
-                totalLines: lines.length,
-                commands,
-                variables,
-                functions
-            }
-        };
-
-        // Generate final payload
-        const payload = {
-            metadata,
-            script: processedLines.join('\n')
-        };
-
-        const payloadString = JSON.stringify(payload, null, 2);
-
+    
+        // Return the raw editor content instead of JSON
+        const rawScript = this.editor.getValue();
+    
         return {
-            content: payloadString,
-            size: payloadString.length,
+            content: rawScript,  // This should be the raw script from editor
+            size: rawScript.length,
             commands,
             variables,
             functions
         };
     }
 
+
     /**
      * Download payload file
      */
     downloadPayload() {
-        if (!this.compiledPayload) {
-            this.showToast('error', 'No Payload', 'Please compile the script first.');
-            return;
-        }
-
-        const filename = `wifi_ducky_payload_${Date.now()}.oqs`;
-        this.downloadFile(this.compiledPayload.content, filename, 'application/json');
-
-        this.logMessage('success', `Payload downloaded: ${filename}`);
-        this.showToast('success', 'Download Complete', `Downloaded ${filename}`);
+         if (!this.compiledPayload) {
+        this.showToast('error', 'No Payload', 'Please compile the script first.');
+        return;
+    }
+    
+    const filename = `wifi_ducky_payload.oqs`;
+    // Use 'text/plain' for .oqs files or create a custom MIME type
+    this.downloadFile(this.compiledPayload.content, filename, 'text/plain');
+    this.logMessage('success', `Payload downloaded: ${filename}`);
+    this.showToast('success', 'Download Complete', `Downloaded ${filename}`);
     }
 
     /**
      * Download file helper
      */
     downloadFile(content, filename, mimeType) {
+        // Use the provided MIME type, not override it
         const blob = new Blob([content], { type: mimeType });
         const url = URL.createObjectURL(blob);
-
+    
         const a = document.createElement('a');
         a.href = url;
         a.download = filename;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-
         URL.revokeObjectURL(url);
     }
+
 
     /**
      * Clear console
