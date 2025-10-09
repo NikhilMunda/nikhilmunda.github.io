@@ -404,6 +404,14 @@ body {
   margin: 0;
 }
 
+
+/* Hide keyboard layout selector and format button */
+#layout-select,
+#format-btn {
+    display: none !important;
+}
+
+
 .editor-controls {
   display: flex;
   gap: var(--space-2);
@@ -485,6 +493,12 @@ body {
   display: flex;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-color);
+}
+
+/* Hide Variables and Functions tabs by aria-controls */
+.tab-btn[aria-controls="variables-tab"],
+.tab-btn[aria-controls="functions-tab"] {
+    display: none !important;
 }
 
 .tab-btn {
@@ -1553,5 +1567,89 @@ kbd {
   .monaco-container {
     background: white !important;
     color: black !important;
+  }
+}
+
+/* ===== MOBILE SCROLLING FIX ===== */
+
+/* Fix mobile viewport issues and enable scrolling */
+@media (max-width: 768px) {
+  /* Allow the main container to be scrollable */
+  .app-container {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+    position: relative !important;
+  }
+
+  /* Make editor section flexible but with minimum height */
+  .editor-section {
+    flex: none !important;
+    height: 60vh !important;
+    min-height: 300px !important;
+    max-height: 70vh !important;
+  }
+
+  /* Ensure editor container is scrollable */
+  .editor-container {
+    height: 100% !important;
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Make console section visible and scrollable */
+  .console-section {
+    flex: none !important;
+    height: auto !important;
+    min-height: 250px !important;
+    max-height: none !important;
+    position: relative !important;
+    overflow: visible !important;
+  }
+
+  /* Enable console content scrolling */
+  .console-content {
+    height: auto !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Fix main content to allow scrolling */
+  .main-content {
+    flex: none !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  .editor-section {
+    height: 50vh !important;
+    min-height: 250px !important;
+  }
+  
+  .console-section {
+    min-height: 200px !important;
+  }
+}
+
+/* Enable touch scrolling for all scrollable elements */
+.console-content,
+.editor-container {
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+/* Fix Monaco Editor mobile touch issues */
+@media (max-width: 768px) {
+  .monaco-editor {
+    touch-action: manipulation !important;
+  }
+  
+  .monaco-editor .view-overlays {
+    touch-action: manipulation !important;
   }
 }
