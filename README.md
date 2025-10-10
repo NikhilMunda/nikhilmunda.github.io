@@ -33,6 +33,8 @@ This enhanced compiler is built to be powerful, intuitive, and bug-free, offerin
    ```
    https://nikhilmunda.github.io/ 
    ```
+🚀 Now start coding
+
 OR
 
 Getting the compiler up and running is incredibly simple.
