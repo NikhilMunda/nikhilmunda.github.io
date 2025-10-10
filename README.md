@@ -3,7 +3,8 @@
 ## Overview
 An advanced, browser-based Ducky Script editor and compiler designed for the **OverQuack WiFi Rubber Ducky** project. This tool provides a professional IDE-like experience for creating, validating, and compiling `.oqs` payloads directly in your browser.
 
-<img width="1872" height="920" alt="Screenshot 2025-10-08 224744" src="https://github.com/user-attachments/assets/50ba94c1-e069-4193-b171-9635997de20a" />
+<img width="1872" height="920" alt="Screenshot 2025-10-08 224744" src="https://github.com/user-attachments/assets/e57d063a-a03f-4a4d-8a55-d61d4bfcb256" />
+
 
 ## 🫡 Acknowledgments
 
