@@ -106,7 +106,7 @@ Distributed under the **GPLv2.0 License**. See [LICENSE](https://github.com/Nikh
 ---
 
 ## Known Issues-
-issue while using FUNCTION since it does predict if the function is calling from same file or import file
+issue while using FUNCTION since it doesnot predict if the function is calling from same file or import file
 
 ## 🙏 Acknowledgements
 
